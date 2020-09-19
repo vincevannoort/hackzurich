@@ -14,6 +14,7 @@ import {
 
 import ReactNativeAN from 'react-native-alarm-notification';
 import RNFetchBlob from 'rn-fetch-blob'
+import RNFS from 'react-native-fs'
 
 
 function Footer() {
@@ -26,13 +27,18 @@ function Footer() {
             .fetch('GET', 'https://p.scdn.co/mp3-preview/3eb16018c2a700240e9dfb8817b6f2d041f15eb1?cid=774b29d4f13844c495f206cafdad9c86')
             .then((res) => {
                 console.log('The file saved to ', res.path())
-            })
+            });
+
+        (async function () {
+            console.log('test')
+            // const read = await RNFS.readFileRes('test.mp3')
+            // console.log(read)
+        })();
     }, [])
 
     async function startAlarm() {
         console.log('start set alarm')
-        const fireDate = ReactNativeAN.parseDate(new Date(Date.now() + 10000));
-        console.log(new Date(Date.now() + 10000))
+        const fireDate = ReactNativeAN.parseDate(new Date(Date.now() + 1000));
         const alarmNotifData = {
             title: "My Notification Title",
             message: "My Notification Message",
@@ -41,17 +47,12 @@ function Footer() {
             data: { foo: "bar" },
             auto_cancel: true,
             has_button: true,
-            sound_name: "macky.mp3"
+            sound_name: 'https://p.scdn.co/mp3-preview/3eb16018c2a700240e9dfb8817b6f2d041f15eb1?cid=774b29d4f13844c495f206cafdad9c86'
         };
+        console.log(alarmNotifData)
         const alarm = await ReactNativeAN.scheduleAlarm({ ...alarmNotifData, fire_date: fireDate });
-        ReactNativeAN.deleteAlarm(alarm.id);
-        ReactNativeAN.deleteRepeatingAlarm(alarm.id);
-        ReactNativeAN.stopAlarmSound();
         ReactNativeAN.sendNotification(alarmNotifData);
-        const alarms = await ReactNativeAN.getScheduledAlarms();
-        ReactNativeAN.removeFiredNotification(alarm.id);
-        ReactNativeAN.removeAllFiredNotifications();
-        console.log('end set alarm')
+        // console.log('end set alarm')
     }
 
     async function stopAlarm() {
