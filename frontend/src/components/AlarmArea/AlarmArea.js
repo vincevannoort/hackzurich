@@ -1,5 +1,7 @@
 // @ts-check
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
+
 
 import {
     SafeAreaView,
@@ -22,8 +24,18 @@ function AlarmArea() {
 
     function setAlarm() {
         setAlarmActivated(!alarmActivated)
+        AsyncStorage.setItem('alarmActivated', (!alarmActivated).toString())
         console.log('set alarm')
     }
+
+    useEffect(() => {
+        (async function () {
+            const alarmActivatedStorage = await AsyncStorage.getItem('alarmActivated')
+            if (alarmActivatedStorage == null) AsyncStorage.setItem('alarmActivated', false.toString())
+            const alarmActivated = alarmActivatedStorage == 'true'
+            setAlarmActivated(alarmActivated)
+        })();
+    }, [])
 
     return (
         <View>

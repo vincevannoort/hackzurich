@@ -38,7 +38,7 @@ function GroupArea() {
                 {
                     data.groups.map(group => {
                         return (
-                            <Text>{group.name}</Text>
+                            <Text key={group.name}>{group.name}</Text>
                         )
                     })
                 }
