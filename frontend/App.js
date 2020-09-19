@@ -31,6 +31,8 @@ const App = () => {
             channel: "my_channel_id",
             small_icon: "ic_launcher",
             data: { foo: "bar" },
+            auto_cancel: true,
+            has_button: true,
         };
 
         console.log(alarmNotifData)
@@ -48,6 +50,10 @@ const App = () => {
         console.log('end set alarm')
     }
 
+    async function stopAlarm() {
+        ReactNativeAN.stopAlarmSound()
+    }
+
     return (
         <>
             <StatusBar barStyle="dark-content" />
@@ -55,7 +61,8 @@ const App = () => {
                 <ScrollView
                     contentInsetAdjustmentBehavior="automatic"
                     style={styles.scrollView}>
-                    <Button onPress={() => { setAlarm() }} title="test" />
+                    <Button onPress={() => { setAlarm() }} title="start" />
+                    <Button onPress={() => { stopAlarm() }} title="stop" />
                 </ScrollView>
             </SafeAreaView>
         </>

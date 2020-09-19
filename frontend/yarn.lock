@@ -5483,10 +5483,9 @@ react-is@^16.12.0, react-is@^16.8.1, react-is@^16.8.4, react-is@^16.8.6:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-react-native-alarm-notification@^1.7.0:
+react-native-alarm-notification@vincevannoort/react-native-alarm-notification:
   version "1.7.0"
-  resolved "https://registry.yarnpkg.com/react-native-alarm-notification/-/react-native-alarm-notification-1.7.0.tgz#eeb85f9f44e5c7460251718efa122369cb4e96ec"
-  integrity sha512-JtdYLWanB55i1/IUTyc2vk3uQhQu+M5zFzQFCxpOrd3ukyWZrLmf4b7iZarDmInWZPaVHIOKy5rhFyG3iVthRg==
+  resolved "https://codeload.github.com/vincevannoort/react-native-alarm-notification/tar.gz/a963aec83b7d875df8eff34481690af6c15e3c18"
 
 react-native@0.63.2:
   version "0.63.2"
