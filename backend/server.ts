@@ -39,6 +39,7 @@ const apollo = new ApolloServer({
             }),
             mutationType({
                 definition(t) {
+                    t.crud.updateOneUser()
                     t.crud.createOneUser()
                     t.crud.createOneGroup()
                     t.crud.createOneAlarm()
@@ -51,6 +52,7 @@ const apollo = new ApolloServer({
                     t.model.name()
                     t.model.groups()
                     t.model.alarms()
+                    t.model.wakeUpGroup()
                 },
             }),
             objectType({

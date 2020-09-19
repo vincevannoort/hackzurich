@@ -39,7 +39,7 @@ function AlarmArea() {
 
     return (
         <View>
-            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#5DADF8', borderRadius: 6, padding: 20, marginBottom: 30 }}>
+            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#5DADF8', borderRadius: 6, padding: 30, marginBottom: 30 }}>
                 <View>
                     <Pressable onPress={setTime}>
                         <Text style={{ color: 'white', fontSize: 35, paddingLeft: 5, }}>07:00</Text>

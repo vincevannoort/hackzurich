@@ -41,6 +41,81 @@ input AlarmListRelationFilter {
   some: AlarmWhereInput
 }
 
+input AlarmScalarWhereInput {
+  AND: [AlarmScalarWhereInput!]
+  groupId: IntFilter
+  id: IntFilter
+  message: StringFilter
+  NOT: [AlarmScalarWhereInput!]
+  OR: [AlarmScalarWhereInput!]
+  userId: IntFilter
+}
+
+input AlarmUpdateManyDataInput {
+  message: StringFieldUpdateOperationsInput
+}
+
+input AlarmUpdateManyWithoutGroupInput {
+  connect: [AlarmWhereUniqueInput!]
+  create: [AlarmCreateWithoutGroupInput!]
+  delete: [AlarmWhereUniqueInput!]
+  deleteMany: [AlarmScalarWhereInput!]
+  disconnect: [AlarmWhereUniqueInput!]
+  set: [AlarmWhereUniqueInput!]
+  update: [AlarmUpdateWithWhereUniqueWithoutGroupInput!]
+  updateMany: [AlarmUpdateManyWithWhereNestedInput!]
+  upsert: [AlarmUpsertWithWhereUniqueWithoutGroupInput!]
+}
+
+input AlarmUpdateManyWithoutUserInput {
+  connect: [AlarmWhereUniqueInput!]
+  create: [AlarmCreateWithoutUserInput!]
+  delete: [AlarmWhereUniqueInput!]
+  deleteMany: [AlarmScalarWhereInput!]
+  disconnect: [AlarmWhereUniqueInput!]
+  set: [AlarmWhereUniqueInput!]
+  update: [AlarmUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [AlarmUpdateManyWithWhereNestedInput!]
+  upsert: [AlarmUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input AlarmUpdateManyWithWhereNestedInput {
+  data: AlarmUpdateManyDataInput!
+  where: AlarmScalarWhereInput!
+}
+
+input AlarmUpdateWithoutGroupDataInput {
+  message: StringFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutAlarmsInput
+}
+
+input AlarmUpdateWithoutUserDataInput {
+  group: GroupUpdateOneRequiredWithoutAlarmsInput
+  message: StringFieldUpdateOperationsInput
+}
+
+input AlarmUpdateWithWhereUniqueWithoutGroupInput {
+  data: AlarmUpdateWithoutGroupDataInput!
+  where: AlarmWhereUniqueInput!
+}
+
+input AlarmUpdateWithWhereUniqueWithoutUserInput {
+  data: AlarmUpdateWithoutUserDataInput!
+  where: AlarmWhereUniqueInput!
+}
+
+input AlarmUpsertWithWhereUniqueWithoutGroupInput {
+  create: AlarmCreateWithoutGroupInput!
+  update: AlarmUpdateWithoutGroupDataInput!
+  where: AlarmWhereUniqueInput!
+}
+
+input AlarmUpsertWithWhereUniqueWithoutUserInput {
+  create: AlarmCreateWithoutUserInput!
+  update: AlarmUpdateWithoutUserDataInput!
+  where: AlarmWhereUniqueInput!
+}
+
 input AlarmWhereInput {
   AND: [AlarmWhereInput!]
   group: GroupWhereInput
@@ -74,12 +149,13 @@ type Group {
 input GroupCreateInput {
   alarms: AlarmCreateManyWithoutGroupInput
   name: String!
-  users: UserCreateManyWithoutGroupsInput
+  User: UserCreateOneWithoutGroupsInput
+  users: UserCreateManyWithoutWakeUpGroupInput
 }
 
-input GroupCreateManyWithoutUsersInput {
+input GroupCreateManyWithoutUserInput {
   connect: [GroupWhereUniqueInput!]
-  create: [GroupCreateWithoutUsersInput!]
+  create: [GroupCreateWithoutUserInput!]
 }
 
 input GroupCreateOneWithoutAlarmsInput {
@@ -87,20 +163,118 @@ input GroupCreateOneWithoutAlarmsInput {
   create: GroupCreateWithoutAlarmsInput
 }
 
+input GroupCreateOneWithoutUsersInput {
+  connect: GroupWhereUniqueInput
+  create: GroupCreateWithoutUsersInput
+}
+
 input GroupCreateWithoutAlarmsInput {
   name: String!
-  users: UserCreateManyWithoutGroupsInput
+  User: UserCreateOneWithoutGroupsInput
+  users: UserCreateManyWithoutWakeUpGroupInput
+}
+
+input GroupCreateWithoutUserInput {
+  alarms: AlarmCreateManyWithoutGroupInput
+  name: String!
+  users: UserCreateManyWithoutWakeUpGroupInput
 }
 
 input GroupCreateWithoutUsersInput {
   alarms: AlarmCreateManyWithoutGroupInput
   name: String!
+  User: UserCreateOneWithoutGroupsInput
 }
 
 input GroupListRelationFilter {
   every: GroupWhereInput
   none: GroupWhereInput
   some: GroupWhereInput
+}
+
+input GroupScalarWhereInput {
+  AND: [GroupScalarWhereInput!]
+  id: IntFilter
+  name: StringFilter
+  NOT: [GroupScalarWhereInput!]
+  OR: [GroupScalarWhereInput!]
+  userId: IntNullableFilter
+}
+
+input GroupUpdateManyDataInput {
+  name: StringFieldUpdateOperationsInput
+}
+
+input GroupUpdateManyWithoutUserInput {
+  connect: [GroupWhereUniqueInput!]
+  create: [GroupCreateWithoutUserInput!]
+  delete: [GroupWhereUniqueInput!]
+  deleteMany: [GroupScalarWhereInput!]
+  disconnect: [GroupWhereUniqueInput!]
+  set: [GroupWhereUniqueInput!]
+  update: [GroupUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [GroupUpdateManyWithWhereNestedInput!]
+  upsert: [GroupUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input GroupUpdateManyWithWhereNestedInput {
+  data: GroupUpdateManyDataInput!
+  where: GroupScalarWhereInput!
+}
+
+input GroupUpdateOneRequiredWithoutAlarmsInput {
+  connect: GroupWhereUniqueInput
+  create: GroupCreateWithoutAlarmsInput
+  update: GroupUpdateWithoutAlarmsDataInput
+  upsert: GroupUpsertWithoutAlarmsInput
+}
+
+input GroupUpdateOneWithoutUsersInput {
+  connect: GroupWhereUniqueInput
+  create: GroupCreateWithoutUsersInput
+  delete: Boolean
+  disconnect: Boolean
+  update: GroupUpdateWithoutUsersDataInput
+  upsert: GroupUpsertWithoutUsersInput
+}
+
+input GroupUpdateWithoutAlarmsDataInput {
+  name: StringFieldUpdateOperationsInput
+  User: UserUpdateOneWithoutGroupsInput
+  users: UserUpdateManyWithoutWakeUpGroupInput
+}
+
+input GroupUpdateWithoutUserDataInput {
+  alarms: AlarmUpdateManyWithoutGroupInput
+  name: StringFieldUpdateOperationsInput
+  users: UserUpdateManyWithoutWakeUpGroupInput
+}
+
+input GroupUpdateWithoutUsersDataInput {
+  alarms: AlarmUpdateManyWithoutGroupInput
+  name: StringFieldUpdateOperationsInput
+  User: UserUpdateOneWithoutGroupsInput
+}
+
+input GroupUpdateWithWhereUniqueWithoutUserInput {
+  data: GroupUpdateWithoutUserDataInput!
+  where: GroupWhereUniqueInput!
+}
+
+input GroupUpsertWithoutAlarmsInput {
+  create: GroupCreateWithoutAlarmsInput!
+  update: GroupUpdateWithoutAlarmsDataInput!
+}
+
+input GroupUpsertWithoutUsersInput {
+  create: GroupCreateWithoutUsersInput!
+  update: GroupUpdateWithoutUsersDataInput!
+}
+
+input GroupUpsertWithWhereUniqueWithoutUserInput {
+  create: GroupCreateWithoutUserInput!
+  update: GroupUpdateWithoutUserDataInput!
+  where: GroupWhereUniqueInput!
 }
 
 input GroupWhereInput {
@@ -110,6 +284,8 @@ input GroupWhereInput {
   name: StringFilter
   NOT: [GroupWhereInput!]
   OR: [GroupWhereInput!]
+  User: UserWhereInput
+  userId: IntNullableFilter
   users: UserListRelationFilter
 }
 
@@ -128,6 +304,17 @@ input IntFilter {
   notIn: [Int!]
 }
 
+input IntNullableFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntNullableFilter
+  notIn: [Int!]
+}
+
 """
 The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -137,6 +324,7 @@ type Mutation {
   createOneAlarm(data: AlarmCreateInput!): Alarm!
   createOneGroup(data: GroupCreateInput!): Group!
   createOneUser(data: UserCreateInput!): User!
+  updateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
 }
 
 input NestedIntFilter {
@@ -147,6 +335,17 @@ input NestedIntFilter {
   lt: Int
   lte: Int
   not: NestedIntFilter
+  notIn: [Int!]
+}
+
+input NestedIntNullableFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntNullableFilter
   notIn: [Int!]
 }
 
@@ -177,6 +376,10 @@ enum SortOrder {
   desc
 }
 
+input StringFieldUpdateOperationsInput {
+  set: String
+}
+
 input StringFilter {
   contains: String
   endsWith: String
@@ -196,17 +399,19 @@ type User {
   groups(after: GroupWhereUniqueInput, before: GroupWhereUniqueInput, first: Int, last: Int): [Group!]!
   id: Int!
   name: String!
+  wakeUpGroup: Group
 }
 
 input UserCreateInput {
   alarms: AlarmCreateManyWithoutUserInput
-  groups: GroupCreateManyWithoutUsersInput
+  groups: GroupCreateManyWithoutUserInput
   name: String!
+  wakeUpGroup: GroupCreateOneWithoutUsersInput
 }
 
-input UserCreateManyWithoutGroupsInput {
+input UserCreateManyWithoutWakeUpGroupInput {
   connect: [UserWhereUniqueInput!]
-  create: [UserCreateWithoutGroupsInput!]
+  create: [UserCreateWithoutWakeUpGroupInput!]
 }
 
 input UserCreateOneWithoutAlarmsInput {
@@ -214,13 +419,26 @@ input UserCreateOneWithoutAlarmsInput {
   create: UserCreateWithoutAlarmsInput
 }
 
+input UserCreateOneWithoutGroupsInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutGroupsInput
+}
+
 input UserCreateWithoutAlarmsInput {
-  groups: GroupCreateManyWithoutUsersInput
+  groups: GroupCreateManyWithoutUserInput
   name: String!
+  wakeUpGroup: GroupCreateOneWithoutUsersInput
 }
 
 input UserCreateWithoutGroupsInput {
   alarms: AlarmCreateManyWithoutUserInput
+  name: String!
+  wakeUpGroup: GroupCreateOneWithoutUsersInput
+}
+
+input UserCreateWithoutWakeUpGroupInput {
+  alarms: AlarmCreateManyWithoutUserInput
+  groups: GroupCreateManyWithoutUserInput
   name: String!
 }
 
@@ -231,18 +449,113 @@ input UserListRelationFilter {
 }
 
 input UserOrderByInput {
+  groupId: SortOrder
   id: SortOrder
   name: SortOrder
+}
+
+input UserScalarWhereInput {
+  AND: [UserScalarWhereInput!]
+  groupId: IntNullableFilter
+  id: IntFilter
+  name: StringFilter
+  NOT: [UserScalarWhereInput!]
+  OR: [UserScalarWhereInput!]
+}
+
+input UserUpdateInput {
+  alarms: AlarmUpdateManyWithoutUserInput
+  groups: GroupUpdateManyWithoutUserInput
+  name: StringFieldUpdateOperationsInput
+  wakeUpGroup: GroupUpdateOneWithoutUsersInput
+}
+
+input UserUpdateManyDataInput {
+  name: StringFieldUpdateOperationsInput
+}
+
+input UserUpdateManyWithoutWakeUpGroupInput {
+  connect: [UserWhereUniqueInput!]
+  create: [UserCreateWithoutWakeUpGroupInput!]
+  delete: [UserWhereUniqueInput!]
+  deleteMany: [UserScalarWhereInput!]
+  disconnect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  update: [UserUpdateWithWhereUniqueWithoutWakeUpGroupInput!]
+  updateMany: [UserUpdateManyWithWhereNestedInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutWakeUpGroupInput!]
+}
+
+input UserUpdateManyWithWhereNestedInput {
+  data: UserUpdateManyDataInput!
+  where: UserScalarWhereInput!
+}
+
+input UserUpdateOneRequiredWithoutAlarmsInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutAlarmsInput
+  update: UserUpdateWithoutAlarmsDataInput
+  upsert: UserUpsertWithoutAlarmsInput
+}
+
+input UserUpdateOneWithoutGroupsInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutGroupsInput
+  delete: Boolean
+  disconnect: Boolean
+  update: UserUpdateWithoutGroupsDataInput
+  upsert: UserUpsertWithoutGroupsInput
+}
+
+input UserUpdateWithoutAlarmsDataInput {
+  groups: GroupUpdateManyWithoutUserInput
+  name: StringFieldUpdateOperationsInput
+  wakeUpGroup: GroupUpdateOneWithoutUsersInput
+}
+
+input UserUpdateWithoutGroupsDataInput {
+  alarms: AlarmUpdateManyWithoutUserInput
+  name: StringFieldUpdateOperationsInput
+  wakeUpGroup: GroupUpdateOneWithoutUsersInput
+}
+
+input UserUpdateWithoutWakeUpGroupDataInput {
+  alarms: AlarmUpdateManyWithoutUserInput
+  groups: GroupUpdateManyWithoutUserInput
+  name: StringFieldUpdateOperationsInput
+}
+
+input UserUpdateWithWhereUniqueWithoutWakeUpGroupInput {
+  data: UserUpdateWithoutWakeUpGroupDataInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserUpsertWithoutAlarmsInput {
+  create: UserCreateWithoutAlarmsInput!
+  update: UserUpdateWithoutAlarmsDataInput!
+}
+
+input UserUpsertWithoutGroupsInput {
+  create: UserCreateWithoutGroupsInput!
+  update: UserUpdateWithoutGroupsDataInput!
+}
+
+input UserUpsertWithWhereUniqueWithoutWakeUpGroupInput {
+  create: UserCreateWithoutWakeUpGroupInput!
+  update: UserUpdateWithoutWakeUpGroupDataInput!
+  where: UserWhereUniqueInput!
 }
 
 input UserWhereInput {
   alarms: AlarmListRelationFilter
   AND: [UserWhereInput!]
+  groupId: IntNullableFilter
   groups: GroupListRelationFilter
   id: IntFilter
   name: StringFilter
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
+  wakeUpGroup: GroupWhereInput
 }
 
 input UserWhereUniqueInput {

@@ -85,11 +85,43 @@
       "arity": "List"
     },
     {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "groups"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "groups"
+        },
+        "directive": "relation"
+      },
+      "argument": "",
+      "value": "\"groups\""
+    },
+    {
       "tag": "CreateField",
       "model": "User",
       "field": "alarms",
       "type": "Alarm",
       "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "wakeUpGroup",
+      "type": "Group",
+      "arity": "Required"
     },
     {
       "tag": "CreateModel",
@@ -209,6 +241,13 @@
     {
       "tag": "CreateField",
       "model": "Alarm",
+      "field": "message",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Alarm",
       "field": "group",
       "type": "Group",
       "arity": "Required"
@@ -218,13 +257,6 @@
       "model": "Alarm",
       "field": "user",
       "type": "User",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Alarm",
-      "field": "message",
-      "type": "String",
       "arity": "Required"
     },
     {

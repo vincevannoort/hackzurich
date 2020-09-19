@@ -10,8 +10,9 @@ datasource db {
 model User {
   id     Int     @default(autoincrement()) @id
   name   String
-  groups Group[]
+  groups Group[] @relation("groups")
   alarms Alarm[]
+  wakegroup Group
 }
 
 model Group {
@@ -23,9 +24,9 @@ model Group {
 
 model Alarm {
   id        Int     @default(autoincrement()) @id
+  message   String
   group     Group
   user      User
-  message   String
 }
 
 model Track {

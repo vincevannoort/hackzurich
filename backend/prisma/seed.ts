@@ -2,29 +2,30 @@ import { PrismaClient } from '@prisma/client'
 
 async function seed() {
     const prisma = new PrismaClient()
-    const users = ['Hidde', 'Vince', 'Casper']
+    const userNames = ['Hidde', 'Vince', 'Casper']
+    const groupNames = ['The young wokers', 'Sunday mornay yoga', 'Without coffee i\'m worthless']
 
-    const group = await prisma.group.create({
-        data: {
-            name: 'Voorbeeld groep'
-        }
-    })
+    const groups = await Promise.all(groupNames.map(group => {
+        return prisma.group.create({
+            data: {
+                name: group,
+            }
+        })
+    }))
 
-    await Promise.all(users.map(user => {
+    await Promise.all(userNames.map(user => {
         return prisma.user.create({
             data: {
                 name: user,
                 groups: {
-                    connect: [{
-                        id: group.id
-                    }]
+                    connect: groups.map(group => ({ id: group.id }))
                 },
                 alarms: {
                     create: [{
                         message: 'Goedermorgen nerds!',
                         group: {
                             connect: {
-                                id: group.id
+                                id: groups[0].id
                             }
                         }
                     }]

@@ -102,10 +102,9 @@ const App = () => {
     return (
         <ApolloProvider client={client}>
             <StatusBar barStyle="dark-content" />
-            <SafeAreaView>
-                {/* <Alarm /> */}
+            <View style={{ backgroundColor: '#343E4E', flex: 1 }}>
                 <HomePage />
-            </SafeAreaView>
+            </View>
         </ApolloProvider>
     );
 };

@@ -15,8 +15,8 @@ import {
 function Header() {
     return (
         <View style={{ padding: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Text style={{ fontFamily: "Cochin", fontSize: 30, fontWeight: 'bold', paddingBottom: 10 }}>SociAlarm</Text>
-            <Text style={{ fontFamily: "Cochin", fontSize: 12, fontWeight: 'bold' }}>The only alarm that gets you woke!</Text>
+            <Text style={{ color: 'white', fontFamily: "Cochin", fontSize: 30, fontWeight: 'bold', paddingBottom: 10 }}>SociAlarm</Text>
+            <Text style={{ color: 'white', fontFamily: "Cochin", fontSize: 12, fontWeight: 'bold' }}>The most woke alarm!</Text>
         </View>
     );
 }
