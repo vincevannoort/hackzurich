@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./dev.db"
+  url = "***"
 }
 
 model User {
@@ -23,9 +23,9 @@ model Group {
 
 model Alarm {
   id        Int     @default(autoincrement()) @id
-  message   String
   group     Group
   user      User
+  message   String
 }
 
 model Track {
