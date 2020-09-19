@@ -2,6 +2,8 @@
 import React from 'react';
 import ReactNativeAN from 'react-native-alarm-notification';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery } from '@apollo/client';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 
 import {
     SafeAreaView,
@@ -22,6 +24,7 @@ import {
     ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import HomePage from './src/pages/HomePage';
+import PickSongPage from './src/pages/PickSongPage';
 
 // Create the client as outlined in the setup guide
 const client = new ApolloClient({
@@ -29,82 +32,31 @@ const client = new ApolloClient({
     cache: new InMemoryCache()
 });
 
-const GET_USERS = gql`
-  query {
-    users {
-        id
-        name
-    }
-  }
-`;
+export const screenOptions = {
+    headerShown: false,
+    headerStyle: {
+        backgroundColor: '#131E22',
+    },
+    ...TransitionPresets.ModalSlideFromBottomIOS,
+};
+
+export const cardStyle = {
+    cardStyle: { backgroundColor: '#343E4E' },
+};
+
+const Stack = createStackNavigator();
 
 const App = () => {
-
-
-    function Alarm() {
-        const { data, loading, error } = useQuery(GET_USERS)
-        if (loading || error) return <></>;
-        console.log(data)
-
-        async function startAlarm() {
-            console.log('start set alarm')
-            const fireDate = ReactNativeAN.parseDate(new Date(Date.now() + 10000));
-            console.log(new Date(Date.now() + 10000))
-            const alarmNotifData = {
-                title: "My Notification Title",
-                message: "My Notification Message",
-                channel: "my_channel_id",
-                small_icon: "ic_launcher",
-                data: { foo: "bar" },
-                auto_cancel: true,
-                has_button: true,
-            };
-            const alarm = await ReactNativeAN.scheduleAlarm({ ...alarmNotifData, fire_date: fireDate });
-            ReactNativeAN.deleteAlarm(alarm.id);
-            ReactNativeAN.deleteRepeatingAlarm(alarm.id);
-            ReactNativeAN.stopAlarmSound();
-            ReactNativeAN.sendNotification(alarmNotifData);
-            const alarms = await ReactNativeAN.getScheduledAlarms();
-            ReactNativeAN.removeFiredNotification(alarm.id);
-            ReactNativeAN.removeAllFiredNotifications();
-            console.log('end set alarm')
-        }
-
-        async function stopAlarm() {
-            ReactNativeAN.stopAlarmSound()
-        }
-
-        return (
-            <>
-                <TouchableOpacity onPress={() => { console.log('pressed') }}>
-                    <View style={{ padding: 30 }}>
-                        <Text>test</Text>
-                    </View>
-                </TouchableOpacity>
-                <Button onPress={() => { startAlarm() }} title="start" />
-                <Button onPress={() => { stopAlarm() }} title="stop" />
-                {
-                    data.users.map((user) => {
-                        return (
-                            <View key={user.name} style={{ padding: 10, backgroundColor: 'red' }}>
-                                <Text>
-                                    {user.name}
-                                </Text>
-                            </View>
-                        )
-                    })
-                }
-            </>
-        )
-    }
-
 
     return (
         <ApolloProvider client={client}>
             <StatusBar barStyle="dark-content" />
-            <View style={{ backgroundColor: '#343E4E', flex: 1 }}>
-                <HomePage />
-            </View>
+            <NavigationContainer>
+                <Stack.Navigator screenOptions={screenOptions}>
+                    <Stack.Screen name="HomePage" component={HomePage} options={cardStyle} />
+                    <Stack.Screen name="PickSongPage" component={PickSongPage} options={cardStyle} />
+                </Stack.Navigator>
+            </NavigationContainer>
         </ApolloProvider>
     );
 };
