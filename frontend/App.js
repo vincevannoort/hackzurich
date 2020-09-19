@@ -21,6 +21,7 @@ import {
     DebugInstructions,
     ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import HomePage from './src/pages/HomePage';
 
 // Create the client as outlined in the setup guide
 const client = new ApolloClient({
@@ -102,7 +103,8 @@ const App = () => {
         <ApolloProvider client={client}>
             <StatusBar barStyle="dark-content" />
             <SafeAreaView>
-                <Alarm />
+                {/* <Alarm /> */}
+                <HomePage />
             </SafeAreaView>
         </ApolloProvider>
     );
