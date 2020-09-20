@@ -21,13 +21,14 @@ function AlarmArea() {
     const [alarmTime, setAlarmTime] = useState(new Date());
 
     function setTime() {
-        setShow(!show)
+        setShow(true)
     }
 
     function changedTime(event, selectedDate) {
         console.log(event)
         console.log(selectedDate)
         setAlarmTime(new Date(selectedDate))
+        setShow(false)
     }
 
     function setAlarm() {
