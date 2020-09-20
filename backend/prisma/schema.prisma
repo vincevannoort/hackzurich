@@ -20,6 +20,7 @@ model Group {
   name   String
   users  User[]
   alarms Alarm[]
+  track  Track?
 }
 
 model Alarm {
@@ -31,4 +32,8 @@ model Alarm {
 
 model Track {
   id        Int     @default(autoincrement()) @id
+  url       String
+  name      String
+  artist    String
+  image     String
 }

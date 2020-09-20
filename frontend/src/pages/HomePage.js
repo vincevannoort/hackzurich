@@ -29,17 +29,12 @@ function HomePage({ navigation }) {
                 </LinearGradient>
             </ImageBackground>
 
-            <TouchableOpacity onPress={() => navigation.navigate('PickSongPage')} style={{ backgroundColor: "red", padding: 10, margin: 30 }}>
-                <Text>Pick song</Text>
-            </TouchableOpacity>
-
             <View style={{ padding: 30 }}>
                 <Header />
                 <AlarmArea />
-                <GroupArea />
+                <GroupArea navigation={navigation} />
                 <Footer />
             </View>
-            <Text>HomePage</Text>
         </ScrollView>
     );
 }

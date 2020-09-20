@@ -1,5 +1,6 @@
 // @ts-check
 import React, { useEffect, useState, useCallback } from 'react';
+import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery, useMutation } from '@apollo/client';
 import LinearGradient from 'react-native-linear-gradient';
 
 import {
@@ -26,6 +27,7 @@ var RNFetchBlob = require('rn-fetch-blob').default
 import querystring from 'querystring';
 import { debounce } from "lodash";
 import axios from 'axios';
+import useGroup from '../hooks/useGroup';
 
 async function searchSpotifyAndPlay(s) {
     const clientsecret = 'Basic MzgwNWI2ZTJlNjI4NDZkYmE0YWY2N2E0MDU3OTVmYjQ6NjkwZDE4ODczYzEzNDUxNGJlMDZjOWQ3Mjc3ODRiYzM=';
@@ -56,7 +58,7 @@ async function searchSpotifyAndPlay(s) {
             params: {
                 q: s,
                 type: 'track',
-                limit: 5
+                limit: 15
             },
             headers: {
                 'Authorization': 'Bearer ' + accessToken,
@@ -72,9 +74,41 @@ async function searchSpotifyAndPlay(s) {
 
 }
 
-function PickSongPage() {
+const UPDATE_GROUP_WITH_TRACK = gql`
+    mutation updateGroupWithTrack($groupId: Int!, $track: String!, $name: String!, $artist: String!, $image: String!) {
+        updateOneGroup(
+            where: {
+                id: $groupId
+            }
+            data: {
+                track: {
+                    create: {
+                        url: $track,
+                        name: $name,
+                        artist: $artist
+                        image: $image
+                    }
+                }
+            }
+        ) {
+            id
+            track {
+                id
+                url
+            }
+        }
+    }
+`;
+
+function PickSongPage({ navigation }) {
     const [search, setSearch] = useState('');
     const [tracks, setTracks] = useState([]);
+    const [groupId] = useGroup();
+    const [updateGroupWithTrack, { loading, error, data }] = useMutation(UPDATE_GROUP_WITH_TRACK)
+
+    console.log(data)
+    console.log(error)
+    console.log(loading)
 
     async function searchSpotify(search) {
         const trackList = await searchSpotifyAndPlay(search);
@@ -93,23 +127,52 @@ function PickSongPage() {
         handler()
     }
 
+    function setSongForGroup(track) {
+        if (groupId == null) throw new Error("No group selected")
+
+        const variables = {
+            groupId: groupId,
+            track: track.preview_url,
+            userId: 1,
+            name: track.name,
+            artist: track.artists[0].name,
+            image: track.album.images[0].url
+        };
+
+        console.log(variables)
+
+        updateGroupWithTrack({
+            variables: variables
+        })
+
+        navigation.goBack()
+        console.log(track)
+    }
+
+    const filteredTracks = tracks.filter(track => track.preview_url != null)
+
     return (
-        <View>
-            <Text>PickSongPage</Text>
+        <View style={{ padding: 30 }}>
+            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 22, marginBottom: 20 }}>Pick a song</Text>
             <View>
                 <SearchBar
                     placeholder="Type Here..."
                     onChangeText={changedSearch}
                     value={search}
                 />
-                <ScrollView>
+                <ScrollView style={{ marginTop: 30 }} keyboardShouldPersistTaps='always'>
                     {
-                        tracks.map(track => {
+                        filteredTracks.map(track => {
                             return (
-                                <View key={track.id}>
-                                    <Text>{track.name}</Text>
-                                </View>
-
+                                <TouchableOpacity key={track.id} onPress={() => setSongForGroup(track)}>
+                                    <View key={track.id} style={{ display: 'flex', flexDirection: 'row', backgroundColor: '#505F77', marginBottom: 10, borderRadius: 6 }}>
+                                        <ImageBackground source={{ uri: track.album.images[0].url }} style={{ width: 80, height: 80, borderRadius: 5, overflow: 'hidden' }} />
+                                        <View style={{ padding: 20 }}>
+                                            <Text style={{ color: 'white', fontSize: 15, }}>{track.name}</Text>
+                                            <Text style={{ color: 'white', fontSize: 12, opacity: 0.7 }}>{track.artists[0].name}</Text>
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
                             )
                         })
                     }

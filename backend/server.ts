@@ -34,12 +34,13 @@ const apollo = new ApolloServer({
                     t.crud.group()
                     t.crud.groups({ filtering: true })
                     t.crud.alarm()
-                    t.crud.alarm({ filtering: true })
+                    t.crud.alarms({ filtering: true })
                 },
             }),
             mutationType({
                 definition(t) {
                     t.crud.updateOneUser()
+                    t.crud.updateOneGroup()
                     t.crud.createOneUser()
                     t.crud.createOneGroup()
                     t.crud.createOneAlarm()
@@ -62,6 +63,7 @@ const apollo = new ApolloServer({
                     t.model.name()
                     t.model.users()
                     t.model.alarms()
+                    t.model.track()
                 },
             }),
             objectType({
@@ -71,7 +73,16 @@ const apollo = new ApolloServer({
                     t.model.group()
                     t.model.user()
                     t.model.message()
-                    // t.model.trackId()
+                },
+            }),
+            objectType({
+                name: 'Track',
+                definition(t) {
+                    t.model.id()
+                    t.model.url()
+                    t.model.name()
+                    t.model.artist()
+                    t.model.image()
                 },
             }),
         ],

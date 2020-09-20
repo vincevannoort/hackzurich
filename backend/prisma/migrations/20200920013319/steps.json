@@ -121,7 +121,7 @@
       "model": "User",
       "field": "wakeUpGroup",
       "type": "Group",
-      "arity": "Required"
+      "arity": "Optional"
     },
     {
       "tag": "CreateModel",
@@ -190,6 +190,13 @@
       "field": "alarms",
       "type": "Alarm",
       "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Group",
+      "field": "track",
+      "type": "Track",
+      "arity": "Optional"
     },
     {
       "tag": "CreateModel",
@@ -305,6 +312,34 @@
         },
         "directive": "id"
       }
+    },
+    {
+      "tag": "CreateField",
+      "model": "Track",
+      "field": "url",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Track",
+      "field": "name",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Track",
+      "field": "artist",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Track",
+      "field": "image",
+      "type": "String",
+      "arity": "Required"
     }
   ]
 }

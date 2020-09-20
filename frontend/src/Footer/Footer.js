@@ -15,9 +15,14 @@ import {
 import ReactNativeAN from 'react-native-alarm-notification';
 import RNFetchBlob from 'rn-fetch-blob'
 import RNFS from 'react-native-fs'
+import { useQuery } from '@apollo/client';
+import { GET_GROUPS } from '../components/GroupArea/GroupArea';
+import useGroup from '../hooks/useGroup';
 
 
 function Footer() {
+    const { data, loading, error } = useQuery(GET_GROUPS)
+    const [groupId] = useGroup()
 
     useEffect(() => {
         RNFetchBlob
@@ -37,22 +42,28 @@ function Footer() {
     }, [])
 
     async function startAlarm() {
+        console.log('groupId', groupId)
+        console.log(data)
+
+        const group = data.groups.find(group => group.id == groupId)
+        console.log('found group', group)
+        console.log('track url in start alarm: ', group.track.url)
+
         console.log('start set alarm')
         const fireDate = ReactNativeAN.parseDate(new Date(Date.now() + 1000));
         const alarmNotifData = {
-            title: "My Notification Title",
-            message: "My Notification Message",
+            title: "You are now woke!",
+            message: `${group.track.name} - ${group.track.artist}`,
             channel: "my_channel_id",
             small_icon: "ic_launcher",
-            data: { foo: "bar" },
             auto_cancel: true,
             has_button: true,
-            sound_name: 'https://p.scdn.co/mp3-preview/3eb16018c2a700240e9dfb8817b6f2d041f15eb1?cid=774b29d4f13844c495f206cafdad9c86'
+            sound_name: group.track.url,
         };
         console.log(alarmNotifData)
         const alarm = await ReactNativeAN.scheduleAlarm({ ...alarmNotifData, fire_date: fireDate });
         ReactNativeAN.sendNotification(alarmNotifData);
-        // console.log('end set alarm')
+        console.log('end set alarm')
     }
 
     async function stopAlarm() {
@@ -60,11 +71,11 @@ function Footer() {
     }
     return (
         <View>
-            <TouchableOpacity onPress={startAlarm} style={{ padding: 10, backgroundColor: 'red', marginBottom: 10 }}>
-                <Text>Start</Text>
+            <TouchableOpacity onPress={startAlarm} style={{ borderRadius: 6, padding: 10, backgroundColor: '#505F77', marginBottom: 10 }}>
+                <Text style={{ color: 'white' }}>Start</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={stopAlarm} style={{ padding: 10, backgroundColor: 'red' }}>
-                <Text>Stop</Text>
+            <TouchableOpacity onPress={stopAlarm} style={{ borderRadius: 6, padding: 10, backgroundColor: '#505F77' }}>
+                <Text style={{ color: 'white' }}>Stop</Text>
             </TouchableOpacity>
         </View>
     );

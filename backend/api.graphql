@@ -143,12 +143,14 @@ type Group {
   alarms(after: AlarmWhereUniqueInput, before: AlarmWhereUniqueInput, first: Int, last: Int): [Alarm!]!
   id: Int!
   name: String!
+  track: Track
   users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int): [User!]!
 }
 
 input GroupCreateInput {
   alarms: AlarmCreateManyWithoutGroupInput
   name: String!
+  track: TrackCreateOneWithoutGroupInput
   User: UserCreateOneWithoutGroupsInput
   users: UserCreateManyWithoutWakeUpGroupInput
 }
@@ -170,6 +172,7 @@ input GroupCreateOneWithoutUsersInput {
 
 input GroupCreateWithoutAlarmsInput {
   name: String!
+  track: TrackCreateOneWithoutGroupInput
   User: UserCreateOneWithoutGroupsInput
   users: UserCreateManyWithoutWakeUpGroupInput
 }
@@ -177,12 +180,14 @@ input GroupCreateWithoutAlarmsInput {
 input GroupCreateWithoutUserInput {
   alarms: AlarmCreateManyWithoutGroupInput
   name: String!
+  track: TrackCreateOneWithoutGroupInput
   users: UserCreateManyWithoutWakeUpGroupInput
 }
 
 input GroupCreateWithoutUsersInput {
   alarms: AlarmCreateManyWithoutGroupInput
   name: String!
+  track: TrackCreateOneWithoutGroupInput
   User: UserCreateOneWithoutGroupsInput
 }
 
@@ -198,7 +203,16 @@ input GroupScalarWhereInput {
   name: StringFilter
   NOT: [GroupScalarWhereInput!]
   OR: [GroupScalarWhereInput!]
+  trackId: IntNullableFilter
   userId: IntNullableFilter
+}
+
+input GroupUpdateInput {
+  alarms: AlarmUpdateManyWithoutGroupInput
+  name: StringFieldUpdateOperationsInput
+  track: TrackUpdateOneWithoutGroupInput
+  User: UserUpdateOneWithoutGroupsInput
+  users: UserUpdateManyWithoutWakeUpGroupInput
 }
 
 input GroupUpdateManyDataInput {
@@ -240,6 +254,7 @@ input GroupUpdateOneWithoutUsersInput {
 
 input GroupUpdateWithoutAlarmsDataInput {
   name: StringFieldUpdateOperationsInput
+  track: TrackUpdateOneWithoutGroupInput
   User: UserUpdateOneWithoutGroupsInput
   users: UserUpdateManyWithoutWakeUpGroupInput
 }
@@ -247,12 +262,14 @@ input GroupUpdateWithoutAlarmsDataInput {
 input GroupUpdateWithoutUserDataInput {
   alarms: AlarmUpdateManyWithoutGroupInput
   name: StringFieldUpdateOperationsInput
+  track: TrackUpdateOneWithoutGroupInput
   users: UserUpdateManyWithoutWakeUpGroupInput
 }
 
 input GroupUpdateWithoutUsersDataInput {
   alarms: AlarmUpdateManyWithoutGroupInput
   name: StringFieldUpdateOperationsInput
+  track: TrackUpdateOneWithoutGroupInput
   User: UserUpdateOneWithoutGroupsInput
 }
 
@@ -284,6 +301,8 @@ input GroupWhereInput {
   name: StringFilter
   NOT: [GroupWhereInput!]
   OR: [GroupWhereInput!]
+  track: TrackWhereInput
+  trackId: IntNullableFilter
   User: UserWhereInput
   userId: IntNullableFilter
   users: UserListRelationFilter
@@ -324,6 +343,7 @@ type Mutation {
   createOneAlarm(data: AlarmCreateInput!): Alarm!
   createOneGroup(data: GroupCreateInput!): Group!
   createOneUser(data: UserCreateInput!): User!
+  updateOneGroup(data: GroupUpdateInput!, where: GroupWhereUniqueInput!): Group
   updateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
 }
 
@@ -365,6 +385,7 @@ input NestedStringFilter {
 
 type Query {
   alarm(where: AlarmWhereUniqueInput!): Alarm
+  alarms(after: AlarmWhereUniqueInput, before: AlarmWhereUniqueInput, first: Int, last: Int, where: AlarmWhereInput): [Alarm!]!
   group(where: GroupWhereUniqueInput!): Group
   groups(after: GroupWhereUniqueInput, before: GroupWhereUniqueInput, first: Int, last: Int, where: GroupWhereInput): [Group!]!
   user(where: UserWhereUniqueInput!): User
@@ -392,6 +413,63 @@ input StringFilter {
   not: NestedStringFilter
   notIn: [String!]
   startsWith: String
+}
+
+type Track {
+  artist: String!
+  id: Int!
+  image: String!
+  name: String!
+  url: String!
+}
+
+input TrackCreateOneWithoutGroupInput {
+  connect: TrackWhereUniqueInput
+  create: TrackCreateWithoutGroupInput
+}
+
+input TrackCreateWithoutGroupInput {
+  artist: String!
+  image: String!
+  name: String!
+  url: String!
+}
+
+input TrackUpdateOneWithoutGroupInput {
+  connect: TrackWhereUniqueInput
+  create: TrackCreateWithoutGroupInput
+  delete: Boolean
+  disconnect: Boolean
+  update: TrackUpdateWithoutGroupDataInput
+  upsert: TrackUpsertWithoutGroupInput
+}
+
+input TrackUpdateWithoutGroupDataInput {
+  artist: StringFieldUpdateOperationsInput
+  image: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  url: StringFieldUpdateOperationsInput
+}
+
+input TrackUpsertWithoutGroupInput {
+  create: TrackCreateWithoutGroupInput!
+  update: TrackUpdateWithoutGroupDataInput!
+}
+
+input TrackWhereInput {
+  AND: [TrackWhereInput!]
+  artist: StringFilter
+  Group: GroupListRelationFilter
+  id: IntFilter
+  image: StringFilter
+  name: StringFilter
+  NOT: [TrackWhereInput!]
+  OR: [TrackWhereInput!]
+  url: StringFilter
+}
+
+input TrackWhereUniqueInput {
+  id: Int
 }
 
 type User {
