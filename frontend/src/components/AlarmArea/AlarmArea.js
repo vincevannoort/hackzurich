@@ -1,7 +1,7 @@
 // @ts-check
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
-
+import DateTimePicker from '@react-native-community/datetimepicker'
 
 import {
     SafeAreaView,
@@ -17,9 +17,17 @@ import {
 
 function AlarmArea() {
     const [alarmActivated, setAlarmActivated] = useState(false);
+    const [show, setShow] = useState(false);
+    const [alarmTime, setAlarmTime] = useState(new Date());
 
     function setTime() {
-        console.log('set alarm')
+        setShow(!show)
+    }
+
+    function changedTime(event, selectedDate) {
+        console.log(event)
+        console.log(selectedDate)
+        setAlarmTime(new Date(selectedDate))
     }
 
     function setAlarm() {
@@ -37,13 +45,26 @@ function AlarmArea() {
         })();
     }, [])
 
+    const hours = alarmTime.getHours()
+    const minutes = alarmTime.getMinutes()
+
     return (
         <View>
             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#5DADF8', borderRadius: 6, padding: 30, marginBottom: 30 }}>
                 <View>
-                    <Pressable onPress={setTime}>
-                        <Text style={{ color: 'white', fontSize: 35, paddingLeft: 5, }}>07:00</Text>
+                    <Pressable onPress={() => { setTime() }}>
+                        <Text style={{ color: 'white', fontSize: 35, paddingLeft: 5, }}>{hours}:{minutes}</Text>
                     </Pressable>
+                    {show && (
+                        <DateTimePicker
+                            testID="dateTimePicker"
+                            value={alarmTime}
+                            mode={'time'}
+                            is24Hour={true}
+                            display="default"
+                            onChange={changedTime}
+                        />
+                    )}
                 </View>
                 <View>
                     <Pressable onPress={setAlarm} style={{ padding: 10, backgroundColor: alarmActivated ? '#5DF888' : 'grey', borderRadius: 6, }}>
