@@ -88,9 +88,9 @@ function GroupArea({ navigation }) {
                         }
                     </Picker>
                 </View>
-                <Text style={textStyle}>Yesterday's wake up song:</Text>
+                <Text style={textStyle}>Tommorrows wake up song:</Text>
                 {
-                    group && (
+                    group && group.track && (
                         <View style={{ display: 'flex', flexDirection: 'row', backgroundColor: '#697C9B', borderRadius: 6, marginBottom: 15 }}>
                             <ImageBackground source={{ uri: group.track.image }} style={{ width: 80, height: '100%', borderRadius: 6, overflow: 'hidden' }} />
                             <View style={{ padding: 15, paddingHorizontal: 20 }}>
